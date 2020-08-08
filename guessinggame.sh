@@ -1,33 +1,29 @@
-# This is a basic workflow to help you get started with Actions
+#!/usr/bin/env bash
+filenum=$(ls | wc -l)
 
-name: CI
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
-
-    # Runs a single command using the runners shell
-    - name: Run a one-line script
-      run: echo Hello, world!
-
-    # Runs a set of commands using the runners shell
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+function guess_filenum {
+	read guess
+	if [[ $guess -eq $filenum ]]
+	then
+		echo "Amazing!!! You finally guessed it!"
+		echo "Hooooooray"
+		echo "  So we have ..."
+		for f in $(ls)
+		do
+			echo "  - $f and "
+		done
+		echo "    ... and that was it."
+	else
+		if [[ $guess -gt $filenum ]]
+		then
+			echo "There is less... try again and press Enter :"
+			guess_filenum
+		else
+			echo "There is more... try again and press Enter :"
+			guess_filenum
+		fi
+	fi
+}
+echo "Welcome to the guessing game!"
+echo "Guess how many files are in the current directory (pretend you don't know) and press Enter :"
+guess_filenum
